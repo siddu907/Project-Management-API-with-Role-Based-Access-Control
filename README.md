@@ -90,56 +90,6 @@ Project Management API with Role-Based Access Control/
     ├── test_project.py
     └── test_rbac.py
 ```
-
-## Database schema
-The application uses four main tables to support users, projects, tasks, and project membership.
-
-```mermaid
-erDiagram
-    USERS {
-        int id PK
-        varchar full_name
-        varchar email
-        varchar password
-        enum role
-        datetime created_at
-    }
-    PROJECTS {
-        int id PK
-        varchar name
-        text description
-        int created_by FK
-        datetime created_at
-        bool is_deleted
-    }
-    PROJECT_MEMBERS {
-        int id PK
-        int project_id FK
-        int user_id FK
-    }
-    TASKS {
-        int id PK
-        varchar title
-        text description
-        enum status
-        enum priority
-        datetime due_date
-        int assigned_to FK
-        int project_id FK
-        bool is_deleted
-    }
-    USERS ||--o{ PROJECTS : creates
-    PROJECTS ||--o{ PROJECT_MEMBERS : has
-    USERS ||--o{ PROJECT_MEMBERS : belongs_to
-    PROJECTS ||--o{ TASKS : contains
-    USERS ||--o{ TASKS : assigned_to
-```
-
-- `users` stores application users with roles: `Admin`, `Manager`, `Member`.
-- `projects` stores project details and supports soft delete via `is_deleted`.
-- `project_members` links users to projects for membership and permission checks.
-- `tasks` stores task details, assignment, project association, and soft delete via `is_deleted`.
-
 ## Authentication
 ### Signup
 - Endpoint: `POST /auth/signup`
