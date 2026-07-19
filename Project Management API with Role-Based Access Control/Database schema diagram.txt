@@ -1,0 +1,35 @@
+                                        ┌───────────────────────────────┐
+                                        │            USERS              │
+                                        ├──────────┬────────────────┬────┤
+                                        │ int      │ id             │ PK │
+                                        │ varchar  │ full_name      │    │
+                                        │ varchar  │ email          │    │
+                                        │ varchar  │ password       │    │
+                                        │ enum     │ role           │    │
+                                        │ datetime │ created_at     │    │
+                            ___________ │          │                │    │
+                           |            └──────────┴────────────────┴────┘
+                           |                │                  │
+                        creates             │                  │ assigned_to
+                           │                │                  │
+                           ▼              belongs_to           ▼
+┌───────────────────────────────┐           │        ┌───────────────────────────────┐
+│           PROJECTS            │           │        │             TASKS             │
+├──────────┬────────────────┬────┤          │        ├──────────┬────────────────┬────┤
+│ int      │ id             │ PK │          │        │ int      │ id             │ PK │
+│ varchar  │ name           │    │          │        │ varchar  │ title          │    │
+│ text     │ description    │    │ contains │        │ text     │ description    │    │
+│ int      │ created_by     │ FK │──────────┼───────▶│ enum     │ status         │    │
+│ datetime │ created_at     │    │          │        │ enum     │ priority       │    │
+│          │                │    │          │        │ datetime │ due_date       │    │
+└──────────┴────────────────┴────┘          │        │ int      │ assigned_to    │ FK │
+            │                               │        │ int      │ project_id     │ FK │
+            │ has                           │        |          |                │    │
+            ▼                               │        └──────────┴────────────────┴────┘
+┌───────────────────────────────┐           │
+│      PROJECT_MEMBERS          │◀───────── |
+├──────────┬────────────────┬────┤
+│ int      │ id             │ PK │
+│ int      │ project_id     │ FK │
+│ int      │ user_id        │ FK │
+└──────────┴────────────────┴────┘
